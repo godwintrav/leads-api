@@ -1,10 +1,11 @@
 from datetime import date
-from typing import List
 from sqlmodel import Session, func, select
 from fastapi import Depends, HTTPException, status
 from lead.model import Lead
 from lead.schema import LeadCreate, LeadListResponse, LeadUpdate, LeadResponse, PaginationResponse
 from database import get_session
+import csv
+from io import StringIO
 
 def create_lead(lead_data: LeadCreate, session: Session = Depends(get_session)) -> LeadResponse:
     existing_lead = session.exec(select(Lead).where(Lead.email == lead_data.email)).first()
@@ -102,3 +103,31 @@ def get_leads(
     )
 
     return LeadListResponse(leads=leads_response, pagination=pagination)
+
+def get_leads_as_csv(session: Session = Depends(get_session)) -> str:
+    leads = session.exec(select(Lead)).all()
+
+    if not leads:
+        return ""
+
+    # create CSV output
+    output = StringIO()
+    csv_writer = csv.writer(output)
+
+    # write csv header
+    csv_writer.writerow(["id", "full_name", "email", "company", "stage", "engaged", "last_contacted"])
+
+    # write data row by row using loop
+    for lead in leads:
+        csv_writer.writerow([
+            lead.id,
+            lead.full_name,
+            lead.email,
+            lead.company,
+            lead.stage,
+            "Engaged" if lead.engaged else "Not Engaged",
+            lead.last_contacted.strftime("%b %d, %Y")
+        ])
+
+    # return output
+    return output.getvalue()

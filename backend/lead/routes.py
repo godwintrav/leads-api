@@ -1,12 +1,12 @@
 from datetime import date
-from fastapi import APIRouter, Body, Depends
+from fastapi import APIRouter, Body, Depends, Response
 from sqlmodel import Session
 from typing import Annotated, List
 
 from auth.model import User
 from auth.util import get_current_user
 from lead.schema import LeadCreate, LeadDelete, LeadListResponse, LeadUpdate, LeadResponse
-from lead.service import create_lead, delete_leads, get_leads, update_lead, get_lead
+from lead.service import create_lead, delete_leads, get_leads, get_leads_as_csv, update_lead, get_lead
 from database import get_session
 
 router = APIRouter(prefix="/leads", tags=["Leads"])
@@ -14,6 +14,17 @@ router = APIRouter(prefix="/leads", tags=["Leads"])
 @router.post("/", response_model=LeadResponse, status_code=201)
 async def create(lead_data: LeadCreate, user: User = Depends(get_current_user), session: Session = Depends(get_session)) -> LeadResponse:
     return create_lead(lead_data, session=session)
+
+@router.get("/export", response_class=Response)
+def export_leads_as_csv(csv_data: str = Depends(get_leads_as_csv)):
+    if not csv_data:
+        return Response(content="No data available", media_type="text/plain")
+
+    return Response(
+        content=csv_data,
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=leads.csv"}
+    )
 
 @router.get("/{lead_id}", response_model=LeadResponse, status_code=200)
 async def retrieve(lead_id: int, user: User = Depends(get_current_user), session: Session = Depends(get_session)) -> LeadResponse:
@@ -33,6 +44,7 @@ async def delete_leads_route(
 
 @router.get("/", response_model=LeadListResponse)
 async def fetch_leads(
+    user: User = Depends(get_current_user),
     session: Session = Depends(get_session),
     limit: int = 10,
     page: int = 1,
