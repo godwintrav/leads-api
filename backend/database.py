@@ -2,7 +2,8 @@ from sqlmodel import create_engine, Session, SQLModel
 
 from config import DATABASE_URL, SSL_CERT_PATH
 
-engine = create_engine(DATABASE_URL, echo=True, connect_args={"sslmode": "require", "sslrootcert": SSL_CERT_PATH })
+engine = create_engine(DATABASE_URL, echo=True, connect_args={"sslmode": "require", "sslrootcert": SSL_CERT_PATH }, pool_pre_ping=True,
+pool_size=10, max_overflow=20 )
 
 def init_db():
     SQLModel.metadata.create_all(engine)
