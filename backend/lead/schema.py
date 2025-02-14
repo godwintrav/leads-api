@@ -29,5 +29,21 @@ class LeadResponse(LeadBase):
     id: int
     created: datetime
 
+class PaginationResponse(BaseModel):
+    """Schema for pagination response"""
+    total_items: int = 0
+    total_pages: int = 0
+    items_per_page: int = 0
+    current_page: int = 0
+    next_page: int | None = None
+    prev_page: int | None = None
+    
+
+class LeadListResponse(BaseModel):
+    """Schema for leads list response"""
+    leads: list[LeadResponse]
+    pagination: PaginationResponse
+
+
     class Config:
         from_attributes = True 
