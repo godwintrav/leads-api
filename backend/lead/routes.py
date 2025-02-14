@@ -1,12 +1,12 @@
 from datetime import date
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Body, Depends
 from sqlmodel import Session
-from typing import List
+from typing import Annotated, List
 
 from auth.model import User
 from auth.util import get_current_user
-from lead.schema import LeadCreate, LeadListResponse, LeadUpdate, LeadResponse
-from lead.service import create_lead, get_leads, update_lead, delete_lead, get_lead
+from lead.schema import LeadCreate, LeadDelete, LeadListResponse, LeadUpdate, LeadResponse
+from lead.service import create_lead, delete_leads, get_leads, update_lead, get_lead
 from database import get_session
 
 router = APIRouter(prefix="/leads", tags=["Leads"])
@@ -23,12 +23,16 @@ async def retrieve(lead_id: int, user: User = Depends(get_current_user), session
 async def update(lead_id: int, lead_data: LeadUpdate, user: User = Depends(get_current_user), session: Session = Depends(get_session)) -> LeadResponse:
     return update_lead(lead_id, lead_data, session=session)
 
-@router.delete("/{lead_id}", status_code=200)
-async def delete(lead_id: int, user: User = Depends(get_current_user), session: Session = Depends(get_session)) -> dict:
-    return delete_lead(lead_id, session=session)
+@router.delete("/", status_code=200)
+async def delete_leads_route(
+    lead_data: LeadDelete,
+    user: User = Depends(get_current_user),
+    session: Session = Depends(get_session)
+) -> dict:
+    return delete_leads(lead_data.lead_ids, session=session)
 
 @router.get("/", response_model=LeadListResponse)
-def fetch_leads(
+async def fetch_leads(
     session: Session = Depends(get_session),
     limit: int = 10,
     page: int = 1,

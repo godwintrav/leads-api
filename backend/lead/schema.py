@@ -24,6 +24,10 @@ class LeadUpdate(BaseModel):
     engaged: Optional[bool] = None
     last_contacted: Optional[date] = None
 
+class LeadDelete(BaseModel):
+    """Schema for deleting leads"""
+    lead_ids: list[int] = []
+
 class LeadResponse(LeadBase):
     """Schema for lead response"""
     id: int

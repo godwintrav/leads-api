@@ -31,17 +31,18 @@ def update_lead(lead_id: int, lead_data: LeadUpdate, session: Session = Depends(
     session.refresh(lead)
     return lead
 
-def delete_lead(lead_id: int, session: Session = Depends(get_session)):
-    lead = session.get(Lead, lead_id)
-    if not lead:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Lead not found")
+def delete_leads(lead_ids: list[int], session: Session = Depends(get_session)):
+    for lead_id in lead_ids:
+        lead = session.get(Lead, lead_id)
+        if not lead:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"No matching lead found for {lead_id}")
 
-    session.delete(lead)
+        session.delete(lead)
+
     session.commit()
-    return {"message": "Lead deleted successfully"}
+    return {"message": f"{len(lead_ids)} leads deleted successfully"}
 
 def get_lead(lead_id: int, session: Session = Depends(get_session)) -> LeadResponse:
-    """Fetches a lead by ID"""
     lead = session.get(Lead, lead_id)
     if not lead:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Lead not found")
@@ -81,9 +82,9 @@ def get_leads(
     total_items = session.exec(select(func.count()).select_from(query.subquery())).one()
 
     if sort == "asc":
-        query = query.order_by(Lead.last_contacted.asc())
+        query = query.order_by(Lead.created.asc())
     else:
-        query = query.order_by(Lead.last_contacted.desc())
+        query = query.order_by(Lead.created.desc())
 
     total_pages = (total_items + limit - 1) // limit 
     offset = (page - 1) * limit
