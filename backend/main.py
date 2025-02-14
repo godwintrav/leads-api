@@ -8,7 +8,7 @@ async def lifespan(app: FastAPI):
     init_db()
     yield
 
-app = FastAPI()
+app = FastAPI(lifespan=lifespan)
 
 @app.get('/health')
 def index():
