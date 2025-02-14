@@ -6,7 +6,13 @@ engine = create_engine(DATABASE_URL, echo=True, connect_args={"sslmode": "requir
 
 def init_db():
     SQLModel.metadata.create_all(engine)
+    print("DB connected")
 
 def get_session():
     with Session(engine) as session:
         yield session
+
+def close_db():
+    if engine:
+        engine.dispose()
+        print("Database connection closed.")
