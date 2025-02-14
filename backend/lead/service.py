@@ -5,7 +5,6 @@ from lead.schema import LeadCreate, LeadUpdate, LeadResponse
 from database import get_session
 
 def create_lead(lead_data: LeadCreate, session: Session = Depends(get_session)) -> LeadResponse:
-    """Creates a new lead"""
     existing_lead = session.exec(select(Lead).where(Lead.email == lead_data.email)).first()
     if existing_lead:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Lead with this email already exists")
@@ -17,7 +16,6 @@ def create_lead(lead_data: LeadCreate, session: Session = Depends(get_session)) 
     return new_lead
 
 def update_lead(lead_id: int, lead_data: LeadUpdate, session: Session = Depends(get_session)) -> LeadResponse:
-    """Updates an existing lead"""
     lead = session.get(Lead, lead_id)
     if not lead:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Lead not found")
@@ -32,7 +30,6 @@ def update_lead(lead_id: int, lead_data: LeadUpdate, session: Session = Depends(
     return lead
 
 def delete_lead(lead_id: int, session: Session = Depends(get_session)):
-    """Deletes a lead"""
     lead = session.get(Lead, lead_id)
     if not lead:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Lead not found")
