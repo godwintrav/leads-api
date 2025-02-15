@@ -1,4 +1,3 @@
-from fastapi import Depends
 from sqlmodel import create_engine, Session, select
 from sqlalchemy.orm import sessionmaker
 from database.seed_data import get_default_leads

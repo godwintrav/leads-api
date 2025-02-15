@@ -1,10 +1,8 @@
 from fastapi import APIRouter, Depends
 from sqlmodel import Session
 
-from auth.model import User
 from auth.schema import ApiDefaultResponse, TokenResponse, UserCreate, UserLogin
 from auth.service import login_user, register_user
-from auth.util import get_current_user
 from database.database import get_session
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])

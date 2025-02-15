@@ -1,11 +1,11 @@
-from pydantic import BaseModel, EmailStr, Field, conint, constr, field_validator
+from pydantic import BaseModel, EmailStr, Field
 from datetime import date, datetime
 from typing import Optional
 from typing_extensions import Annotated
 
 class LeadBase(BaseModel):
     """Base schema for lead with strict validation"""
-    full_name: Annotated[str, Field(min_length=3, max_length=100)]  
+    full_name: Annotated[str, Field(min_length=2, max_length=100)]  
     email: EmailStr 
     company: Annotated[str, Field(min_length=2, max_length=100)]
     stage: Annotated[int, Field(ge=0, le=4)] 

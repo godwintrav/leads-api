@@ -1,7 +1,6 @@
 from datetime import date
-from fastapi import APIRouter, Body, Depends, Response
+from fastapi import APIRouter, Depends, Response
 from sqlmodel import Session
-from typing import Annotated, List
 
 from auth.model import User
 from auth.util import get_current_user
