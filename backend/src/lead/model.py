@@ -7,9 +7,9 @@ class Lead(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     full_name: str = Field(index=True) # indexed to ensure efficient full text searching
     email: str = Field(unique=True, index=True) # indexed to ensure efficient full text searching
-    company: str = Field(index=True) # indexed to ensure efficient full text searching
-    stage: int = Field(ge=0, le=4, index=True) # indexed to ensure efficient filtering
-    engaged: bool = Field(index=True) # indexed to ensure efficient filtering
+    company: str = Field(index=True) # indexed company to ensure efficient full text searching
+    stage: int = Field(ge=0, le=4, index=True) # indexed staged to ensure efficient filtering
+    engaged: bool = Field(index=True) # indexed engaged to ensure efficient filtering
     last_contacted: Optional[date] = Field(index=True) # indexed to ensure efficient filtering
     created: datetime = Field(default_factory=datetime.now, index=True) # indexed to ensure efficient filtering
 
