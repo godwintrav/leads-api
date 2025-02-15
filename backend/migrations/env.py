@@ -1,3 +1,7 @@
+import sys
+import os
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "src")))
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
@@ -5,8 +9,8 @@ from sqlalchemy import pool
 
 from alembic import context
 from sqlmodel import SQLModel
-from lead.model import Lead
-from auth.model import User
+from src.lead.model import Lead
+from src.auth.model import User
 from config import DATABASE_URL
 
 # this is the Alembic Config object, which provides

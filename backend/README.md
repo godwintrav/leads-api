@@ -2,7 +2,9 @@
 
 ## Project Overview
 
-This is the Leads app backend API. This project uses Fastapi and Postgresql. The main entry file is the main.py file. The project uses a modular architecture to ensure seperation of concern. Each module handles various parts of the whole application. The src module store the core api domains which is Auth and Lead
+This is the Leads app backend API. This project uses Fastapi and Postgresql. The main entry file is the main.py file. The project uses a modular architecture to ensure seperation of concern. Each module handles various parts of the whole application. The src module store the core api domains which is Auth and Lead.
+
+The database module holds the functions for setting up our database and the migration module stores the Alembic configuration for running migrations.
 
 ### Features
 
