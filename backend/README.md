@@ -11,6 +11,14 @@ This is the Leads app backend API. This project uses Fastapi and Postgresql. The
 - Export Lead data to csv
 - Creating, Update and Delete Lead
 
+### Deployment
+
+The application is deployed on render: [https://leads-api-h40k.onrender.com](https://leads-api-h40k.onrender.com)
+
+- API endpoint: [https://leads-api-h40k.onrender.com](https://leads-api-h40k.onrender.com)
+- Interactive API Docs (Swagger UI): [https://leads-api-h40k.onrender.com/docs](https://leads-api-h40k.onrender.com/docs)
+- Alternative API Docs (ReDoc): [https://leads-api-h40k.onrender.com/redoc](https://leads-api-h40k.onrender.com/redoc)
+
 ##  API Modules:
 
 ### Auth Module
