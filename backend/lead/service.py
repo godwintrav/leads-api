@@ -3,7 +3,7 @@ from sqlmodel import Session, func, select
 from fastapi import Depends, HTTPException, status
 from lead.model import Lead
 from lead.schema import LeadCreate, LeadListResponse, LeadUpdate, LeadResponse, PaginationResponse
-from database import get_session
+from database.database import get_session
 import csv
 from io import StringIO
 
@@ -69,8 +69,11 @@ def get_leads(
     if stage is not None:
         query = query.where(Lead.stage == stage)
 
-    if from_date and to_date:
-        query = query.where(Lead.last_contacted.between(from_date, to_date))
+    if from_date and to_date :
+        if from_date < to_date:
+            query = query.where(Lead.last_contacted.between(from_date, to_date))
+        else:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="from_date must be a date before to_date ")
 
     if search:
         search_filter = (

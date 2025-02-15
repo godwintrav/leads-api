@@ -2,13 +2,13 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
-from database import close_db, init_db
+from database.database import close_db, seed_db
 from auth.routes import router as auth_router
 from lead.routes import router as lead_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    init_db()
+    seed_db()
     yield
 
     close_db()
@@ -18,6 +18,7 @@ app = FastAPI(lifespan=lifespan)
 origins = [
     "http://localhost",
     "http://localhost:3000",
+    "https://artisan-assessment.vercel.app"
 ]
 
 app.add_middleware(
