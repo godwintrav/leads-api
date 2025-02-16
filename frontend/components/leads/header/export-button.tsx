@@ -12,6 +12,7 @@ export const ExportButton = () => {
   const handleExport = () => {
     setShouldExport(true);
     refetch();
+    setShouldExport(false);
   };
 
   return (

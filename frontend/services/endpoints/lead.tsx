@@ -16,4 +16,4 @@ export const GET_LEADS = ({
   from_date,
   to_date,
 }: LeadsQueryParams) =>
-  `/leads?limit=${limit || 10}${`&page=${page || 1}`}${sort ? `&sort=${sort}` : ""}${engaged ? `&engaged=${engaged}` : ""}${stage ? `&stage=${stage}` : ""}${search ? `&search=${search}` : ""}${from_date ? `&from_date=${from_date}` : ""}${to_date ? `&to_date=${to_date}` : ""}`;
+  `/leads?limit=${limit || 30}${`&page=${page || 1}`}${sort ? `&sort=${sort}` : ""}${engaged ? `&engaged=${engaged}` : ""}${stage ? `&stage=${stage}` : ""}${search ? `&search=${search}` : ""}${from_date ? `&from_date=${from_date}` : ""}${to_date ? `&to_date=${to_date}` : ""}`;
