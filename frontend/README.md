@@ -1,6 +1,6 @@
 # Frontend Assessment - Artisan
 
-The technical assessment implemented using Next.js, focusing on building a leads management with authentication and CRUD operations.
+A technical assessment implemented using Next.js, focusing on building a leads management system with authentication and CRUD operations.
 
 ## Tech Stack
 
@@ -25,6 +25,63 @@ The technical assessment implemented using Next.js, focusing on building a leads
 - Unit testing
 - Type-safe API calls
 
+## Application Architecture
+
+### Provider Layer
+
+The application uses a provider-based architecture to manage library state and functionality:
+
+- **QueryClientProvider**: Manages all data fetching and caching using Tanstack Query
+
+  - Configured with automatic background refetching
+  - Includes mutation cache for automatic query invalidation
+
+- **ToastProvider**: Handles application-wide notifications
+
+  - Positioned at top-right
+  - Prevents duplicate notifications
+  - 3-second duration for notifications
+
+- **Interceptor**: Manages API request/response lifecycle
+  - Injects authentication tokens into requests
+  - Displays loading indicators using NProgress
+  - Handles network errors and displays notifications
+  - Manages session expiration with automatic modal display
+  - Provides consistent error handling across the application
+
+### Data Flow
+
+1. **API Services** (`/services/`)
+
+   - Contains API endpoint definitions in `/services/endpoints/`
+     - Centralized endpoint URLs as constants
+     - Organized by feature (auth, leads)
+     - Enables easy endpoint management and updates
+   - Implements type-safe API calls using axios instance in `/services/api/`
+     - Custom axios instance with base URL and timeout configuration
+     - Type-safe request/response interfaces
+     - Organized service modules (auth.ts, lead.ts)
+
+2. **Custom Hooks**
+
+   - **Queries** (`/hooks/queries/`)
+
+     - `useGetLeads`: Fetches and manages leads data
+     - `useExportLeads`: Handles lead data export
+     - Implements caching and automatic background updates
+
+   - **Mutations** (`/hooks/mutations/`)
+     - `useLogin`: Manages user authentication
+     - `useSignup`: Handles user registration
+     - `useCreateLead`: Creates new leads
+     - `useUpdateLead`: Updates existing leads
+     - Automatically invalidates related queries on success
+
+3. **Components**
+   - Organized by feature (auth, leads)
+   - Uses Radix UI for accessible components
+   - Styled with Tailwind CSS
+
 ## Project Structure
 
 ```
@@ -37,59 +94,40 @@ The technical assessment implemented using Next.js, focusing on building a leads
 │   └── provider/      # App providers
 ├── constants/         # Configuration and constants
 ├── hooks/             # Custom React hooks
-│   ├── mutations/     # React Query mutations
-│   └── queries/       # React Query queries
+│   ├── mutations/     # Tanstack Query mutations
+│   └── queries/       # Tanstack Query queries
 ├── lib/               # Utility functions
 ├── services/          # API services
 ├── __tests__/        # Unit tests
 └── types.d.ts        # TypeScript declarations
 ```
 
-## Setup
+## Authentication Flow
 
-### Prerequisites
+1. User submits login/signup form
+2. Form data is validated using Zod schemas
+3. API request is made through auth service
+4. On success:
+   - Token is stored in cookies
+   - Success notification is shown
+   - User is redirected to dashboard
+5. On error:
+   - Error notification is displayed
+   - User remains on auth page
 
-- Node.js 18+
-- Package manager (npm/yarn/pnpm/bun)
+## Leads Management Flow
 
-### Installation
+1. Protected routes check for authentication
+2. Leads table fetches data using `useGetLeads`
+3. CRUD operations:
+   - Create: `useCreateLead` mutation
+   - Read: `useGetLeads` query with filters
+   - Update: `useUpdateLead` mutation
+   - Delete: `useDeleteLead` mutation
+4. Automatic query invalidation on mutations
+5. Real-time UI updates through Tanstack Query
 
-```bash
-npm install
-# or
-yarn install
-# or
-pnpm install
-# or
-bun install
-```
 
-### Development
+## Deployment
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun run dev
-```
-
-Access the application at [http://localhost:3000](http://localhost:3000)
-
-### Testing
-
-```bash
-npm test
-# or
-yarn test
-# or
-pnpm test
-# or
-bun run test
-```
-
-### Deployment
-
-The application is deployed on Vercel: [https://leads-app-artisan-assessment.vercel.app/](https://leads-app-artisan-assessment.vercel.app/)
+Frontend: [https://leads-app-artisan-assessment.vercel.app/](https://leads-app-artisan-assessment.vercel.app/)
