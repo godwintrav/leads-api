@@ -1,6 +1,6 @@
 # Frontend Assessment - Artisan
 
-A technical assessment implemented using Next.js, focusing on building a leads management with authentication and CRUD operations.
+The technical assessment implemented using Next.js, focusing on building a leads management with authentication and CRUD operations.
 
 ## Tech Stack
 

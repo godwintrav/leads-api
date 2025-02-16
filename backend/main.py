@@ -24,7 +24,7 @@ app = FastAPI(lifespan=lifespan)
 origins = [
     "http://localhost",
     "http://localhost:3000",
-    "https://artisan-assessment.vercel.app"
+    "https://leads-app-artisan-assessment.vercel.app"
 ]
 
 app.add_middleware(
