@@ -41,3 +41,7 @@ app.include_router(lead_router)
 @app.get('/health')
 def index():
     return {"message": "Running"}
+
+@app.head('/')
+def uptime():
+    return {"message": "success"}
