@@ -92,4 +92,4 @@ bun run test
 
 ### Deployment
 
-The application is deployed on Vercel: [https://artisan-assessment.vercel.app](https://artisan-assessment.vercel.app)
+The application is deployed on Vercel: [https://leads-app-artisan-assessment.vercel.app/](https://leads-app-artisan-assessment.vercel.app/)
