@@ -30,11 +30,11 @@ The Auth Module is the module stores the routes, models, schemas and utility fun
 
 ### Lead Module
 
-This module stores the routes, models, schema and services for handling all features for storing, retrieving and updating Lead information
+This module stores the routes, models, schema and services for handling all features for storing, retrieving, deleting and updating Lead information. 
 
 ## Fast API Project Setup Guide
 
-This guide provides step-by-step instructions on setting up the fast api backend.
+This guide provides step-by-step instructions on setting up the fast api backend for this repo.
 
 ## Prerequisites
 
