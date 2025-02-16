@@ -11,7 +11,11 @@ export default function useCreateLead() {
       toast.success("Lead created successfully");
     },
     onError: (error: any) => {
-      toast.error(error.response?.data.message || "Something went wrong");
+      if(error.response?.data.detail){
+        toast.error(error.response?.data.detail);
+      }else {
+        toast.error(error.response?.data.message || "Something went wrong");
+      }
     },
   });
 }
